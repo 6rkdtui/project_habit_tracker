@@ -11,6 +11,10 @@ const page = {
         h1: document.querySelector('.h1'),
         progressPercent: document.querySelector('.progress_percent'),
         progressCoverBar: document.querySelector('.progress_cover-bar')
+    },
+    content: {
+        daysContainer: document.getElementById('days'),
+        nextDay: document.querySelector('.habbit_day')
     }
 }
 
@@ -34,9 +38,6 @@ function saveData() {
 
 // функция рендера бокового меню
 function rerenderMenu(activeHabbit) {
-    if(!activeHabbit){
-        return;
-    }
     for (const habbit of habbits) {
         const existed = document.querySelector(`[menu-habbit-id="${habbit.id}"]`);
         if (!existed) {
@@ -61,9 +62,6 @@ function rerenderMenu(activeHabbit) {
 
 // функция рендера шапки 
 function rerenderHead(activeHabbit) {
-    if(!activeHabbit){
-        return;
-    }
     page.header.h1.innerHTML = activeHabbit.name;
     const progress = activeHabbit.days.length / activeHabbit.target > 1 
         ? 100
@@ -72,11 +70,32 @@ function rerenderHead(activeHabbit) {
     page.header.progressCoverBar.setAttribute('style', `width: ${progress}%`)
 }
 
+// функция рендера контента (рендер дней)
+function rerenderContent(activeHabbit) {
+    page.content.daysContainer.innerHTML = '';
+    for (const index in activeHabbit.days) {
+        const element = document.createElement('div');
+        element.classList.add('habbit');
+        element.innerHTML = `<div class="habbit_day">День ${Number(index) + 1}</div>
+                        <div class="habbit_comment">${activeHabbit.days[index].comment}</div>
+                        <button class="habbit_delete">
+                            <img src="images/delete.svg" alt="Удалить день ${index + 1}">
+                        </button>`;
+        page.content.daysContainer.appendChild(element);
+    }
+    page.content.nextDay.innerHTML = `День ${activeHabbit.days.length + 1}`;
+}
+
 // функция рендера
 function rerender(activeHabbitId) {
     const activeHabbit = habbits.find(habbit => habbit.id === activeHabbitId);
+
+    if(!activeHabbit){
+        return;
+    }
     rerenderMenu(activeHabbit);
     rerenderHead(activeHabbit);
+    rerenderContent(activeHabbit);
 }
 
 /* init */
