@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 // массив куда будут загружаться данные
 let habbits = [];
@@ -17,7 +17,7 @@ const page = {
         daysContainer: document.getElementById('days'),
         nextDay: document.querySelector('.habbit_day')
     },
-    popap: {
+    popup: {
         index: document.getElementById('add-habbit-popap'),
         iconField: document.querySelector('.popup_form input[name="icon"]')
     }
@@ -40,11 +40,11 @@ function saveData() {
 }
 
 // функция появления попап окна
-function togglePopup () {
-    if (page.popap.index.classList.contains('cover_hidden')) {
-        page.popap.index.classList.remove('cover_hidden');
+function togglePopup() {
+    if (page.popup.index.classList.contains('cover_hidden')) {
+        page.popup.index.classList.remove('cover_hidden');
     } else {
-        page.popap.index.classList.add('cover_hidden');
+        page.popup.index.classList.add('cover_hidden');
     }
 }
 
@@ -138,6 +138,7 @@ function rerender(activeHabbitId) {
     if(!activeHabbit){
         return;
     }
+    document.location.replace(document.location.pathname + '#' + activeHabbitId);
     rerenderMenu(activeHabbit);
     rerenderHead(activeHabbit);
     rerenderContent(activeHabbit);
@@ -216,5 +217,12 @@ function addHabbit(event) {
 /* init */
 (()=> {
     loadData();
-    rerender(habbits[0].id)
+    rerender(habbits[0].id);
+    const hashId = Number(document.location.hash.replace('#', ''));
+    const urlHabbit = habbits.find(habbit => habbit.id == hashId);
+    if (urlHabbit) {
+        rerender(urlHabbit.id);
+    } else {
+        rerender(habbits[0].id);
+    }
 })();
