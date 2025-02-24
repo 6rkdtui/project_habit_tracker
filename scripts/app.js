@@ -16,6 +16,9 @@ const page = {
     content: {
         daysContainer: document.getElementById('days'),
         nextDay: document.querySelector('.habbit_day')
+    },
+    popap: {
+        index: document.getElementById('add-habbit-popap')
     }
 }
 
@@ -33,6 +36,15 @@ function loadData() {
 // функция сохранения данных
 function saveData() {
     localStorage.setItem(HABBIT_KEY, JSON.stringify(habbits));
+}
+
+// функция появления попап окна
+function togglePopup () {
+    if (page.popap.index.classList.contains('cover_hidden')) {
+        page.popap.index.classList.remove('cover_hidden');
+    } else {
+        page.popap.index.classList.add('cover_hidden');
+    }
 }
 
 /* render */
